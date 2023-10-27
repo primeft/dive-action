@@ -20,7 +20,7 @@ function extract(output: string): Result {
             wastedBytes = +line.match(/[+-]?\d+(\.\d+)?/)![0]
         }
         else if (line.includes('userWastedPercent:')) {
-            userWastedPercent = +line.match(/[+-]?\d+(\.\d+)?/)![0]
+            userWastedPercent = +line.match(/[+-]?\d+(\.\d+)?|NaN/)![0]
         }
     }
     return {
@@ -41,7 +41,7 @@ async function run(): Promise<void> {
             return
         }
 
-        const dive = 'wagoodman/dive:v0.9.2';
+        const dive = "wagoodman/dive:v0.11.0";
 
         const runOptions = [
           '-e',

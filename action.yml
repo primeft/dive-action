@@ -1,5 +1,5 @@
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
-name: 'Dive - Container Image Analysis'
+name: "Dive - Container Image Analysis"
 description: "Run Dive to analyze the container image efficiency"
 author: "@martinheinz"
 branding:
@@ -19,11 +19,11 @@ inputs:
     default: ${{ github.workspace }}/.dive-ci
 outputs:
   efficiency:
-    description: 'Efficiency of the image'
+    description: "Efficiency of the image"
   wasted-bytes:
-    description: 'Number of wasted bytes'
+    description: "Number of wasted bytes"
   user-wasted-percent:
-    description: 'Percentage of space waster'
+    description: "Percentage of space wasted"
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
