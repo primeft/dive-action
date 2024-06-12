@@ -17,6 +17,10 @@ inputs:
     description: "Path to dive config file"
     required: false
     default: ${{ github.workspace }}/.dive-ci
+  dive-version:
+    description: "Version of dive to use"
+    required: false
+    default: "v0.12.0"
 outputs:
   efficiency:
     description: "Efficiency of the image"
