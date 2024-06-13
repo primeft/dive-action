@@ -49,14 +49,14 @@ function extract(output) {
     let efficiency = 0;
     let wastedBytes = 0;
     let userWastedPercent = 0;
-    for (const line of output.split('\n')) {
-        if (line.includes('efficiency:')) {
+    for (const line of output.split("\n")) {
+        if (line.includes("efficiency:")) {
             efficiency = +line.match(/[+-]?\d+(\.\d+)?/)[0];
         }
-        else if (line.includes('wastedBytes:')) {
+        else if (line.includes("wastedBytes:")) {
             wastedBytes = +line.match(/[+-]?\d+(\.\d+)?/)[0];
         }
-        else if (line.includes('userWastedPercent:')) {
+        else if (line.includes("userWastedPercent:")) {
             userWastedPercent = +line.match(/[+-]?\d+(\.\d+)?|NaN/)[0];
         }
     }
@@ -69,31 +69,32 @@ function extract(output) {
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const image = core.getInput('image');
-            const config = core.getInput('config');
-            const exitZero = core.getInput('exit-zero');
+            const image = core.getInput("image");
+            const config = core.getInput("config");
+            const exitZero = core.getInput("exit-zero");
+            const diveVersion = core.getInput("dive-version");
             if (config && !fs_1.default.existsSync(config)) {
                 core.setFailed(`Dive configuration file ${config} doesn't exist!`);
                 return;
             }
-            const dive = "wagoodman/dive:v0.11.0";
+            const dive = `wagoodman/dive:${diveVersion}`;
             const runOptions = [
-                '-e',
-                'CI=true',
-                '-e',
-                'DOCKER_API_VERSION=1.37',
-                '--rm',
-                '-v',
-                '/var/run/docker.sock:/var/run/docker.sock'
+                "-e",
+                "CI=true",
+                "-e",
+                "DOCKER_API_VERSION=1.37",
+                "--rm",
+                "-v",
+                "/var/run/docker.sock:/var/run/docker.sock",
             ];
             const cmdOptions = [];
             if (config) {
-                runOptions.push('-v', `${config}:/.dive-ci`);
-                cmdOptions.push('--ci-config', '/.dive-ci');
+                runOptions.push("-v", `${config}:/.dive-ci`);
+                cmdOptions.push("--ci-config", "/.dive-ci");
             }
-            yield exec.exec('docker', ['pull', dive]);
-            const parameters = ['run', ...runOptions, dive, image, ...cmdOptions];
-            let output = '';
+            yield exec.exec("docker", ["pull", dive]);
+            const parameters = ["run", ...runOptions, dive, image, ...cmdOptions];
+            let output = "";
             const execOptions = {
                 ignoreReturnCode: true,
                 listeners: {
@@ -102,19 +103,19 @@ function run() {
                     },
                     stderr: (data) => {
                         output += data.toString();
-                    }
-                }
+                    },
+                },
             };
-            const exitCode = yield exec.exec('docker', parameters, execOptions);
+            const exitCode = yield exec.exec("docker", parameters, execOptions);
             let results = extract(output);
-            core.setOutput('efficiency', results.efficiency);
-            core.setOutput('wasted-bytes', results.wastedBytes);
-            core.setOutput('user-wasted-percent', results.userWastedPercent);
+            core.setOutput("efficiency", results.efficiency);
+            core.setOutput("wasted-bytes", results.wastedBytes);
+            core.setOutput("user-wasted-percent", results.userWastedPercent);
             if (exitCode === 0) {
                 // success
                 return;
             }
-            if (exitZero === 'true') {
+            if (exitZero === "true") {
                 // forced exit 0
                 console.log(`Scan failed (exit code: ${exitCode}), but forcing exit with 0.`);
                 return;
