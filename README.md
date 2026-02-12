@@ -14,7 +14,8 @@ Analyze container image efficiency using [Dive](https://github.com/wagoodman/div
 |`image`|Image to analyze|n/a|yes|
 |`exit-zero`|Whether to exit with zero even when scan fails (still fails on error)|`false`|no|
 |`config`|Path to dive config file|`${{ github.workspace }}/.dive-ci`|no|
-|`dive-version`|Version of dive to use|`v0.12.0`|no|
+|`dive-version`|Version of dive to use|`v0.13.1`|no|
+|`docker-api-version`|Version of the Docker API to use|`1.44`|no|
 ## Outputs
 |Output|Description|
 |------|-----------|
