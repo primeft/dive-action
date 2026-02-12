@@ -89,9 +89,7 @@ async function run(): Promise<void> {
     }
     if (exitZero === "true") {
       // forced exit 0
-      console.log(
-        `Scan failed (exit code: ${exitCode}), but forcing exit with 0.`
-      );
+      console.log(`Scan failed (exit code: ${exitCode}), but forcing exit with 0.`);
       return;
     }
 

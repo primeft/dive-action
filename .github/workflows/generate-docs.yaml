@@ -1,0 +1,25 @@
+name: Generate Action Docs
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate-docs:
+    name: Generate docs
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Generate docs
+        uses: pndurette/gh-actions-auto-docs@e6b4c8b27a1ddd45e1b3157d68ebacd83dd02cd5 # v1.0.1
+        with:
+          heading_size: 2
+          git_commit_message: "chore(tooling): Update action docs"

@@ -7,6 +7,7 @@ Analyze container image efficiency using [Dive](https://github.com/wagoodman/div
 
 ## Usage
 
+<!--doc_begin-->
 ### Inputs
 
 | Name       | Type   | Required | Default                             | Description                                                                  |
@@ -22,12 +23,13 @@ Analyze container image efficiency using [Dive](https://github.com/wagoodman/div
 | efficiency          | Efficiency of the image     |
 | wasted-bytes        | Number of wasted bytes      |
 | user-wasted-percent | Percentage of space waster  |
+<!--doc_end-->
 
 ### Example
 
+<!-- x-release-please-start-version -->
 ```yaml
 name: "Example Workflow with Dive"
-
 on: [push]
 
 jobs:
@@ -35,16 +37,21 @@ jobs:
     runs-on: ubuntu-latest
     name: Analyze image efficiency using Dive
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
       - name: Analyze image efficiency
-        uses: MartinHeinz/dive-action@v0.1.0
+        uses: primeft/dive-action@v0.2.1
         with:
-          image: 'ghcr.io/github-username/some-image:latest'
+          image: "node:alpine"
           config: ${{ github.workspace }}/.dive-ci
+          exit-zero: "false"
 ```
+<!-- x-release-please-end -->
 
 ## Development
+
+**Build output:** The canonical build output is **`dist/`**. The action entry point is `dist/index.js` (see `action.yml`). The `lib/` directory is TypeScript compiler output and is gitignored; do not commit it.
 
 Install and build:
 
@@ -53,19 +60,16 @@ npm install
 npm run build
 ```
 
-Package and release:
+Release (CI runs `npm run build` and commits `dist/` on release PRs):
 
 ```bash
-npm i -g @vercel/ncc
-
 npm run build
-ncc build --source-map --license LICENSE
-git commit -m "..."
-git tag -a -m "..." vX.Y.Z
-git push --follow-tags
+git add dist/
+git commit -m "chore: Build dist for release"
+# Tag and push as needed, or use release-please
 ```
 
-[release]: https://github.com/MartinHeinz/dive-action/releases/latest
-[release-badge]: https://img.shields.io/github/release/MartinHeinz/dive-action.svg?logo=github&color=green
+[release]: https://github.com/primeft/dive-action/releases/latest
+[release-badge]: https://img.shields.io/github/release/primeft/dive-action.svg?logo=github&color=green
 [marketplace]: https://github.com/marketplace/actions/dive-container-image-analysis
 [marketplace-badge]: https://img.shields.io/badge/marketplace-dive--container--image--analysis-green?logo=github

@@ -7,17 +7,20 @@
   },
   "description": "",
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@types/node": "^25.0.0",
+    "esbuild": "^0.27.0",
     "typescript": "^5.0.0"
   },
   "keywords": [],
   "license": "ISC",
-  "main": "lib/main.js",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/index.js",
   "name": "dive",
   "scripts": {
-    "build": "tsc",
-    "package": "ncc build --source-map",
-    "run": "npm run build && ncc build --source-map && node dist/index.js"
+    "build": "esbuild src/main.ts --bundle --platform=node --format=cjs --outfile=dist/index.js --sourcemap && cp LICENSE dist/",
+    "run": "npm run build && node dist/index.js"
   },
   "version": "1.0.0"
 }

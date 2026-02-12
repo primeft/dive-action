@@ -1,0 +1,29 @@
+name: Renovate
+on:
+  workflow_dispatch:
+    inputs:
+      log-level:
+        description: "Log level to use"
+        required: false
+        type: string
+        default: "info"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  renovate:
+    name: Run Renovate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Renovate
+        uses: renovatebot/github-action@44f24283a60f64273f1294932f16ba61193cccca # v46.1.0
+        with:
+          token: ${{ secrets.MARTHA_TOKEN }}
+          configurationFile: renovate.json
+        env:
+          LOG_LEVEL: ${{ inputs.log-level || 'info' }}
