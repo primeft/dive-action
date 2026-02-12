@@ -1,0 +1,62 @@
+name: Release
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-release-pr:
+    name: Build release PR
+    if: ${{ github.event_name == 'pull_request' && (contains(github.head_ref, 'release-please') || contains(github.event.pull_request.title, 'Release')) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout pull request branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+          token: ${{ secrets.MARTHA_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version: "24"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Commit and push dist
+        run: |
+          git config user.name "Martha Prime"
+          git config user.email "martha-prime@primeft.com"
+          git add dist/
+          git diff --staged --quiet || (git commit -m "chore: Build dist for release" && git push)
+
+  upload-release-assets:
+    name: Upload release assets
+    if: ${{ github.event_name == 'release' && github.event.action == 'published' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release tag
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          files: |
+            dist/index.js
+            dist/index.js.map
+            dist/LICENSE
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
