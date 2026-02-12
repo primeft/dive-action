@@ -1,5 +1,4 @@
 name: "Test Workflow with Local Dive Action"
-
 on: [push]
 
 jobs:
@@ -7,11 +6,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Analyze image efficiency using Dive
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
       - name: Analyze image efficiency
         uses: ./
         with:
-          image: 'node:alpine'
+          image: "node:alpine"
           config: ${{ github.workspace }}/.dive-ci
           exit-zero: "false"
