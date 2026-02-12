@@ -1,14 +1,14 @@
 {
   "author": "",
   "dependencies": {
-    "@actions/core": "^3.0.0",
-    "@actions/exec": "^3.0.0",
-    "@actions/github": "^9.0.0"
+    "@actions/core": "3.0.0",
+    "@actions/exec": "3.0.0",
+    "@actions/github": "9.0.0"
   },
   "description": "",
   "devDependencies": {
-    "@types/node": "^24.0.0",
-    "typescript": "^5.0.0"
+    "@types/node": "24.10.13",
+    "typescript": "5.9.3"
   },
   "keywords": [],
   "license": "ISC",
