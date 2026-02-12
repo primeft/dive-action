@@ -34,6 +34,7 @@ async function run(): Promise<void> {
     const config = core.getInput("config");
     const exitZero = core.getInput("exit-zero");
     const diveVersion = core.getInput("dive-version");
+    const dockerApiVersion = core.getInput("docker-api-version");
 
     if (config && !fs.existsSync(config)) {
       core.setFailed(`Dive configuration file ${config} doesn't exist!`);
@@ -46,7 +47,7 @@ async function run(): Promise<void> {
       "-e",
       "CI=true",
       "-e",
-      "DOCKER_API_VERSION=1.37",
+      `DOCKER_API_VERSION=${dockerApiVersion}`,
       "--rm",
       "-v",
       "/var/run/docker.sock:/var/run/docker.sock",
