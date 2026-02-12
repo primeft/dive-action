@@ -1,23 +1,23 @@
 {
-  "name": "dive",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/main.js",
-  "scripts": {
-    "build": "tsc",
-    "package": "ncc build --source-map",
-    "run": "npm run build && ncc build --source-map && node dist/index.js"
-  },
-  "keywords": [],
   "author": "",
-  "license": "ISC",
   "dependencies": {
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0"
   },
+  "description": "",
   "devDependencies": {
     "@types/node": "^17.0.21",
     "typescript": "^4.6.2"
-  }
+  },
+  "keywords": [],
+  "license": "ISC",
+  "main": "lib/main.js",
+  "name": "dive",
+  "scripts": {
+    "build": "tsc",
+    "package": "ncc build --source-map",
+    "run": "npm run build && ncc build --source-map && node dist/index.js"
+  },
+  "version": "1.0.0"
 }
