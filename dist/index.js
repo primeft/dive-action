@@ -14002,7 +14002,7 @@ var require_fetch = __commonJS({
             fetchParams.controller.terminate(e);
           }
         };
-        requestBody = async function* () {
+        requestBody = (async function* () {
           try {
             for await (const bytes of request.body.stream) {
               yield* processBodyChunk(bytes);
@@ -14011,7 +14011,7 @@ var require_fetch = __commonJS({
           } catch (err) {
             processBodyError(err);
           }
-        }();
+        })();
       }
       try {
         const { body, status, statusText, headersList, socket } = await dispatch({ body: requestBody });
@@ -18614,7 +18614,7 @@ function prepareKeyValueMessage(key, value) {
 // node_modules/@actions/core/lib/core.js
 var os5 = __toESM(require("os"), 1);
 
-// node_modules/@actions/core/node_modules/@actions/http-client/lib/index.js
+// node_modules/@actions/http-client/lib/index.js
 var tunnel = __toESM(require_tunnel2(), 1);
 var import_undici = __toESM(require_undici(), 1);
 var HttpCodes;
@@ -19734,6 +19734,7 @@ async function run() {
     const config = getInput("config");
     const exitZero = getInput("exit-zero");
     const diveVersion = getInput("dive-version");
+    const dockerApiVersion = getInput("docker-api-version");
     if (config && !import_fs2.default.existsSync(config)) {
       setFailed(`Dive configuration file ${config} doesn't exist!`);
       return;
@@ -19743,7 +19744,7 @@ async function run() {
       "-e",
       "CI=true",
       "-e",
-      "DOCKER_API_VERSION=1.37",
+      `DOCKER_API_VERSION=${dockerApiVersion}`,
       "--rm",
       "-v",
       "/var/run/docker.sock:/var/run/docker.sock"

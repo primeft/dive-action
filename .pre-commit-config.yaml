@@ -29,6 +29,14 @@ repos:
         args:
           - --branch=main
 
+  - repo: local
+    hooks:
+      - id: build-dist
+        name: build dist for commit
+        entry: bash -c "npm run build && git diff --quiet dist/"
+        language: system
+        files: ^(src/|package\.json|package-lock\.json|tsconfig\.json|action\.yml)
+
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.20.0
     hooks:
