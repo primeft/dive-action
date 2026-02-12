@@ -8,21 +8,19 @@ Analyze container image efficiency using [Dive](https://github.com/wagoodman/div
 ## Usage
 
 <!--doc_begin-->
-### Inputs
-
-| Name       | Type   | Required | Default                             | Description                                                                  |
-| ---------- | ------ | -------- | ----------------------------------- | ---------------------------------------------------------------------------- |
-| image      | String | true     |                                     | Container image to analyze                                                   |
-| config     | String | false    | `${{ github.workspace }}/.dive-ci`  | Path to [dive config file](https://github.com/wagoodman/dive#ci-integration) |
-| exit-zero  | String | false    | `false`                             | Whether to force exit with zero even when scan fails ("true"/"false")        |
-
-### Outputs
-
-| Name                | Description                 |
-| ------------------- | --------------------------- |
-| efficiency          | Efficiency of the image     |
-| wasted-bytes        | Number of wasted bytes      |
-| user-wasted-percent | Percentage of space waster  |
+## Inputs
+|Input|Description|Default|Required|
+|-----|-----------|-------|:------:|
+|`image`|Image to analyze|n/a|yes|
+|`exit-zero`|Whether to exit with zero even when scan fails (still fails on error)|`false`|no|
+|`config`|Path to dive config file|`${{ github.workspace }}/.dive-ci`|no|
+|`dive-version`|Version of dive to use|`v0.12.0`|no|
+## Outputs
+|Output|Description|
+|------|-----------|
+|`efficiency`|Efficiency of the image|
+|`wasted-bytes`|Number of wasted bytes|
+|`user-wasted-percent`|Percentage of space wasted|
 <!--doc_end-->
 
 ### Example
