@@ -36,9 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     name: Analyze image efficiency using Dive
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v0.2.2
-
       - name: Analyze image efficiency
         uses: primeft/dive-action@v0.2.2
         with:
