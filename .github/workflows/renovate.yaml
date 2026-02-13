@@ -27,3 +27,4 @@ jobs:
           configurationFile: renovate.json
         env:
           LOG_LEVEL: ${{ inputs.log-level || 'info' }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
