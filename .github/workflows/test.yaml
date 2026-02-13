@@ -35,7 +35,7 @@ jobs:
       - name: Check if last commit was from this workflow
         id: check-last-commit
         run: |
-          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%s)
           if [[ "$LAST_COMMIT_MSG" == "chore: Update dist" ]]; then
             echo "skip=true" >>"$GITHUB_OUTPUT"
           else
@@ -62,7 +62,7 @@ jobs:
       - name: Validate dist is committed (fork PRs)
         if: ${{ steps.check-fork.outputs.is_fork == 'true' }}
         run: |
-          git diff --quiet dist/ || (echo "::error::dist/ is out of date. Run 'npm run build' and commit the updated dist/." && exit 1)
+          git diff HEAD --quiet dist/ || (echo "::error::dist/ is out of date. Run 'npm run build' and commit the updated dist/." && exit 1)
 
   sample-workflow:
     name: Analyze image efficiency using Dive
