@@ -1,10 +1,13 @@
 name: "Test Workflow with Local Dive Action"
 on:
-  push:
   pull_request:
 
 permissions:
   contents: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   validate-dist:
@@ -14,7 +17,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          token: ${{ secrets.MARTHA_TOKEN }}
+          token: ${{ secrets.MARTHA_TOKEN || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
       - name: Setup Node
@@ -29,12 +32,37 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Check if last commit was from this workflow
+        id: check-last-commit
+        run: |
+          LAST_COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ "$LAST_COMMIT_MSG" == "chore: Update dist" ]]; then
+            echo "skip=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >>"$GITHUB_OUTPUT"
+          fi
+
+      - name: Check if PR is from fork
+        id: check-fork
+        run: |
+          if [[ "${{ github.event.pull_request.head.repo.full_name }}" != "${{ github.repository }}" ]]; then
+            echo "is_fork=true" >>"$GITHUB_OUTPUT"
+          else
+            echo "is_fork=false" >>"$GITHUB_OUTPUT"
+          fi
+
       - name: Commit and push dist if changed
+        if: ${{ steps.check-last-commit.outputs.skip != 'true' && steps.check-fork.outputs.is_fork != 'true' }}
         run: |
           git config user.name "Martha Prime"
           git config user.email "martha-prime@primeft.com"
           git add dist/
           git diff --staged --quiet || (git commit -m "chore: Update dist" && git push)
+
+      - name: Validate dist is committed (fork PRs)
+        if: ${{ steps.check-fork.outputs.is_fork == 'true' }}
+        run: |
+          git diff --quiet dist/ || (echo "::error::dist/ is out of date. Run 'npm run build' and commit the updated dist/." && exit 1)
 
   sample-workflow:
     name: Analyze image efficiency using Dive
