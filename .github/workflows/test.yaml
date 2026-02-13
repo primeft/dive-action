@@ -3,7 +3,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -13,6 +13,8 @@ jobs:
   validate-dist:
     name: Validate dist is up to date
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -62,7 +64,10 @@ jobs:
       - name: Validate dist is committed (fork PRs)
         if: ${{ steps.check-fork.outputs.is_fork == 'true' }}
         run: |
-          git diff HEAD --quiet dist/ || (echo "::error::dist/ is out of date. Run 'npm run build' and commit the updated dist/." && exit 1)
+          if ! git diff HEAD --quiet dist/ || git ls-files --others --exclude-standard dist/ | grep -q .; then
+            echo "::error::dist/ is out of date. Run 'npm run build' and commit the updated dist/."
+            exit 1
+          fi
 
   sample-workflow:
     name: Analyze image efficiency using Dive
