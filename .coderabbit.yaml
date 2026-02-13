@@ -2,3 +2,6 @@
 reviews:
   profile: assertive
   request_changes_workflow: true
+  auto_review:
+    labels:
+      - "!autorelease: pending"
