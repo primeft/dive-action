@@ -19,7 +19,7 @@ repos:
       - id: check-yaml
       - id: detect-private-key
       - id: pretty-format-json
-        exclude: ^(renovate.*|package-lock)\.json)$
+        exclude: ^(renovate.*|package-lock)\.json$
         args:
           - --autofix
       - id: trailing-whitespace
