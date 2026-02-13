@@ -19,9 +19,9 @@ repos:
       - id: check-yaml
       - id: detect-private-key
       - id: pretty-format-json
+        exclude: ^(renovate.*|package-lock)\.json$
         args:
           - --autofix
-        exclude: package-lock.json
       - id: trailing-whitespace
       - id: check-symlinks
       - id: end-of-file-fixer
@@ -29,6 +29,11 @@ repos:
       - id: no-commit-to-branch
         args:
           - --branch=main
+
+  - repo: https://github.com/doradsoft/json5-pre-commit-hook
+    rev: v1.0.3
+    hooks:
+      - id: check-json5
 
   - repo: local
     hooks:
