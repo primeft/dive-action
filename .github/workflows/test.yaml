@@ -19,6 +19,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.head_ref }}
           token: ${{ secrets.MARTHA_TOKEN || secrets.GITHUB_TOKEN }}
           fetch-depth: 0
