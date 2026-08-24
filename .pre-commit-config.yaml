@@ -44,7 +44,7 @@ repos:
         files: ^(src/|package\.json|package-lock\.json|tsconfig\.json|action\.yml)
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.20.0
+    rev: v0.23.2
     hooks:
       - id: markdownlint-cli2
         name: lint markdown files
@@ -52,26 +52,26 @@ repos:
           - --fix
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.36.1
+    rev: 0.38.0
     hooks:
       - id: check-github-workflows
         name: validate workflow files
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.10
+    rev: v1.7.12
     hooks:
       - id: actionlint
         name: lint workflow files
 
   - repo: https://github.com/shellcheck-py/shellcheck-py
-    rev: v0.11.0.1
+    rev: v0.11.0.1-1
     hooks:
       - id: shellcheck
         name: run shellcheck
         args: ["-x"]
 
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.12.0-2
+    rev: v3.13.1-1
     hooks:
       - id: shfmt-src
         name: run shfmt
